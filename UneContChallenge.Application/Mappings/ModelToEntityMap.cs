@@ -8,7 +8,11 @@ namespace UneContChallenge.Application.Mappings
     {
         public ModelToEntityMap() 
         {
+            CreateMap<NotaFiscalViewModel, NotaFiscal>();
             CreateMap<NotaFiscal, NotaFiscalViewModel>();
+
+            CreateMap<FiltroDashboardIndicadoresViewModel, FiltroDashboardIndicadores>();
+            CreateMap<FiltroDashboardIndicadores, FiltroDashboardIndicadoresViewModel>();
         }
     }
 }

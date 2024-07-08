@@ -1,32 +1,34 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using UneContChallenge.Application.Interfaces;
+using UneContChallenge.Application.ViewModels;
 using UneContChallenge.Models;
 
 namespace UneContChallenge.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly INotaFiscalAppService _notaFiscalAppService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(INotaFiscalAppService notaFiscalAppService)
         {
-            _logger = logger;
+            _notaFiscalAppService = notaFiscalAppService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var dadosIndicadores = await _notaFiscalAppService.ObterDashboardIndicadoresAsync();
+            ViewBag.Dados = dadosIndicadores;
             return View();
         }
 
-        public IActionResult Privacy()
+        [HttpGet]
+        public async Task<IActionResult> ObterIndicadoresFiltrado(int ano, int? mes = null, bool trimestral = false)
         {
-            return View();
+            var dadosIndicadores = await _notaFiscalAppService.GetDashboardIndicadoresFiltradosAsync(ano, mes, trimestral);
+
+            return Json(dadosIndicadores);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }

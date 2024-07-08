@@ -13,5 +13,15 @@ namespace UneContChallenge.Domain.Services
         {
             _unitOfWork = unitOfWork;
         }
+
+        public Task<FiltroDashboardIndicadores> GetDashboardIndicadoresFiltradosAsync(int ano, int? mes = null, bool trimestral = false)
+        {
+            return _unitOfWork.NotaFiscalRepository.GetDashboardIndicadoresFiltradosAsync(ano, mes, trimestral);
+        }
+
+        public Task<FiltroDashboardIndicadores> GetDashboardIndicadoresAsync()
+        {
+            return _unitOfWork.NotaFiscalRepository.GetDashboardIndicadoresAsync();
+        }
     }
 }

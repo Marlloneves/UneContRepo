@@ -296,82 +296,27 @@
                     <div class="app-sidebar__inner" style="min-height: 100%">
                         <ul class="vertical-nav-menu" style="margin-top: 10px;">
 
-                            <!-- DASHBOARDS -->
+                            <!-- MENU -->
                             <li>
-                                <a href="#" class="app-sidebar__heading">
+                                <a href="/home/index" class="app-sidebar__heading">
                                     <i class="metismenu-icon fa fa-chart-pie"></i>
-                                    Dashboards
-                                    <i style="font-size: 9pt;" class="metismenu-state-icon fa fa-chevron-down caret-left"></i>
-                                </a>
-                                <ul class="mm-collapse">
-                                    <li >
-                                        <a  onclick="loading()" href="#" style="color: #90c0e2;">
-                                            <i class="fa fa-chart-bar"></i>
-                                            &nbsp;Painel Principal
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#" class="app-sidebar__heading">
-                                    <i class="metismenu-icon fa fa-file-alt"></i>
-                                    &nbsp;Customers
+                                    &nbsp;Dashboards
                                     <i style="font-size: 9pt;" class="caret-left"></i>
                                 </a>
                             </li>
-
                             <li>
                                 <div style="border-bottom: 1px solid #4a5f6f;"></div>
                             </li>
-
                             <li>
-                                <a href="#" class="app-sidebar__heading">
-                                    <i class="metismenu-icon fa fa-user-edit"></i>
-                                    Projects
-                                    <i style="font-size: 9pt;" class="metismenu-state-icon fa fa-chevron-down caret-left"></i>
+                                <a href="/notafiscal/Consulta" class="app-sidebar__heading">
+                                    <i class="metismenu-icon fa fa-file-alt"></i>
+                                    &nbsp;Gerenciar Notas Fiscais
+                                    <i style="font-size: 9pt;" class="caret-left"></i>
                                 </a>
                             </li>
-
-                            <li>
-                                <a href="#" class="app-sidebar__heading">
-                                    <i class="metismenu-icon fa fa-address-card"></i>
-                                    Orders
-                                    <i style="font-size: 9pt;" class="metismenu-state-icon fa fa-chevron-down caret-left"></i>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="#" class="app-sidebar__heading">
-                                    <i class="metismenu-icon fa fa-users-cog"></i>
-                                    Inventory
-                                    <i style="font-size: 9pt;" class="metismenu-state-icon fa fa-chevron-down caret-left"></i>
-                                </a>
-                            </li>
-
                             <li>
                                 <div style="border-bottom: 1px solid #4a5f6f;"></div>
                             </li>
-
-                            <li>
-                                <a href="#" class="app-sidebar__heading">
-                                    <i class="metismenu-icon fa fa-user-graduate"></i>
-                                    Accounts
-                                    <i style="font-size: 9pt;" class="metismenu-state-icon fa fa-chevron-down caret-left"></i>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="#" class="app-sidebar__heading">
-                                    <i class="metismenu-icon fa fa-folder-open"></i>
-                                    Tasks
-                                    <i style="font-size: 9pt;" class="metismenu-state-icon fa fa-chevron-down caret-left"></i>
-                                </a>
-                            </li>
-                            
-                            <li>
-                                <div style="border-bottom: 1px solid #4a5f6f;"></div>
-                            </li>
-                            
                         </ul>
 
                     </div>
@@ -380,18 +325,6 @@
 
             <div class="app-main__outer">
                 <div class="app-main__inner">
-                    <div class="app-page-title">
-                        <div class="page-title-wrapper">
-                            <div class="page-title-heading" style="height: 40px;">
-                                <div class="page-title-icon" style="height: 34px; width: 50px;">
-                                    <i class="fa fa-chart-bar" style="font-size: 16pt; margin: 0px;"></i>
-                                </div>
-                                <div style="margin-left: -10px;">
-                                    Painel Principal
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-md-12">
 
@@ -479,7 +412,7 @@
         $(document).ready(function () {
             $('#tabela').DataTable({
                 "ordering": false,
-                "pageLength": 10,
+                "pageLength": 5,
                 "lengthChange": false,
                 "searching": false,
                 "language": {
@@ -528,10 +461,6 @@
                 theme: 'bootstrap'
             });
         });
-    </script>
-
-    <script>
-        console.log("⚠️ ATENÇÃO: A inspeção deste código é destinada apenas a desenvolvedores autorizados. Qualquer acesso não autorizado é proibido por lei. ⚠️");
     </script>
 
     <script>

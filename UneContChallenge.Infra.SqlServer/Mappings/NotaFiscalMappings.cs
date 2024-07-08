@@ -33,13 +33,13 @@ namespace UneContChallenge.Infra.Mappings
 
             builder.Property(n => n.DocumentoBoletoBancario)
                 .IsRequired()
-                .HasMaxLength(250)
+                .HasMaxLength(500)
                 .HasColumnName("DocumentoBoletoBancario");
 
             builder.Property(n => n.DocumentoNotaFiscal)
                 .IsRequired()
                 .HasColumnName("DocumentoNotaFiscal")
-                .HasMaxLength(250);
+                .HasMaxLength(500);
 
             builder.Property(n => n.DataPagamento)
                 .HasColumnName("DataPagamento");

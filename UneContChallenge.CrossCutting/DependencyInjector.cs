@@ -12,11 +12,13 @@ namespace UneContChallenge.CrossCutting
     {
         public static void Register(IServiceCollection services)
         {
+
             //AppService
             services.AddTransient<INotaFiscalAppService, NotaFiscalAppService>();
 
             //Domain
             services.AddTransient(typeof(IBaseDomainService<>), typeof(BaseDomainService<>));
+            services.AddTransient<INotaFiscalDomainService, NotaFiscalDomainService>();
 
             // Repository
             services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));

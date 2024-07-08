@@ -48,5 +48,19 @@ namespace UneContChallenge.Application.Services
 
             await _notaFiscalDomainService.UpdateAsync(map);
         }
+
+        public async Task<FiltroDashboardIndicadoresViewModel> GetDashboardIndicadoresFiltradosAsync(int ano, int? mes = null, bool trimestral = false)
+        {
+            var dashboardIndicadores = await _notaFiscalDomainService.GetDashboardIndicadoresFiltradosAsync(ano, mes, trimestral);
+
+            return _mapper.Map<FiltroDashboardIndicadoresViewModel>(dashboardIndicadores);
+        }
+
+        public async Task<FiltroDashboardIndicadoresViewModel> ObterDashboardIndicadoresAsync()
+        {
+            var dashboardIndicadores = await _notaFiscalDomainService.GetDashboardIndicadoresAsync();
+
+            return _mapper.Map<FiltroDashboardIndicadoresViewModel>(dashboardIndicadores);
+        }
     }
 }

@@ -1,0 +1,256 @@
+﻿@model IEnumerable<UneContChallenge.Application.ViewModels.NotaFiscalViewModel>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading" style="height: 40px;">
+                <div class="page-title-icon" style="height: 34px; width: 50px;">
+                    <i class="metismenu-icon fa fa-file-alt" style="font-size: 16pt; margin: 0px;"></i>
+                </div>
+                <div style="margin-left: -10px;">
+                    <strong>Notas Fiscais</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</head>
+<body>
+    <div class="container">
+        <!-- Navegação por Abas -->
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#cadastro">Cadastro de Nota Fiscal</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#listagem">Listagem de Notas Fiscais</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <!-- Aba de Cadastro de Nota Fiscal -->
+            <div id="cadastro" class="container tab-pane active">
+                <br>
+                <h4>Cadastrar Nota Fiscal</h4>
+                @using (Html.BeginForm("Cadastro", "NotaFiscal", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="nomePagador">Nome do Pagador</label>
+                            <input type="text" class="form-control" id="nomePagador" name="nomePagador" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="numeroIdentificacao">Número de Identificação</label>
+                            <input type="text" class="form-control" id="numeroIdentificacao" name="numeroIdentificacao" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="dataEmissao">Data de Emissão</label>
+                            <input type="date" class="form-control" id="dataEmissao" name="dataEmissao" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="dataCobranca">Data de Cobrança</label>
+                            <input type="date" class="form-control" id="dataCobranca" name="dataCobranca">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="dataPagamento">Data de Pagamento</label>
+                            <input type="date" class="form-control" id="dataPagamento" name="dataPagamento">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="valorNota">Valor da Nota</label>
+                            <input type="number" step="0.01" class="form-control" id="valorNota" name="valor" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="documentoNota">Documento da Nota Fiscal</label>
+                            <input type="file" class="form-control-file" id="documentoNota" name="DocumentoNotaFiscal" accept=".pdf,.doc,.docx,.jpg,.png" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="documentoBoleto">Documento do Boleto Bancário</label>
+                            <input type="file" class="form-control-file" id="documentoBoleto" name="DocumentoBoletoBancario" accept=".pdf,.doc,.docx,.jpg,.png" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="statusNotaCadastro">Status da Nota</label>
+                            <select class="form-control" id="statusNotaCadastro" name="Status" required>
+                                <option value="">Selecione</option>
+                                <option value="Emitida">Emitida</option>
+                                <option value="Cobrança Realizada">Cobrança realizada</option>
+                                <option value="Pagamento em Atraso">Pagamento em atraso</option>
+                                <option value="Pagamento Realizado">Pagamento realizado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                }
+            </div>
+
+            <!-- Aba de Listagem e Filtros de Notas Fiscais -->
+            <div id="listagem" class="container tab-pane fade">
+                <br>
+                <h4>Listagem de Notas Fiscais</h4>
+                <!-- Seção de Filtros -->
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <label for="mesEmissao">Mês de Emissão</label>
+                        <input type="month" class="form-control" id="mesEmissao">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="mesCobranca">Mês de Cobrança</label>
+                        <input type="month" class="form-control" id="mesCobranca">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="mesPagamento">Mês de Pagamento</label>
+                        <input type="month" class="form-control" id="mesPagamento">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="statusNota">Status da Nota</label>
+                        <select class="form-control" id="statusNota">
+                            <option value="">Selecione</option>
+                            <option value="Emitida">Emitida</option>
+                            <option value="Cobrança Realizada">Cobrança realizada</option>
+                            <option value="Pagamento em Atraso">Pagamento em atraso</option>
+                            <option value="Pagamento Realizado">Pagamento realizado</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <button class="btn btn-primary" id="filtrarBtn">Filtrar</button>
+                        <button class="btn btn-secondary" id="limparFiltrosBtn">Limpar Filtros</button>
+                    </div>
+                </div>
+
+                <!-- Tabela de Notas Fiscais -->
+                @if(Model != null && Model.Any())
+                {
+                    <div class="table-responsive">
+                        <table id="tabela" class="mb-0 table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Nome do Pagador</th>
+                                    <th>Nº de Identificação</th>
+                                    <th>Data de Emissão</th>
+                                    <th>Data de Cobrança</th>
+                                    <th>Data de Pagamento</th>
+                                    <th>Valor da Nota</th>
+                                    <th>Doc NF-e</th>
+                                    <th>Doc Boleto</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="notasTableBody">
+                                @foreach (var nota in Model)
+                                {
+                                    <tr>
+                                        <td>@nota.NomePagador</td>
+                                        <td>@nota.NumeroIdentificacao</td>
+                                        <td data-iso-date="@nota.DataEmissao.ToString("yyyy-MM-dd")">@nota.DataEmissao.ToString("dd/MM/yyyy")</td>
+                                        <td data-iso-date="@nota.DataCobranca?.ToString("yyyy-MM-dd")">@nota.DataCobranca?.ToString("dd/MM/yyyy")</td>
+                                        <td data-iso-date="@nota.DataPagamento?.ToString("yyyy-MM-dd")">@nota.DataPagamento?.ToString("dd/MM/yyyy")</td>
+                                        <td>@nota.Valor.ToString("C")</td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(nota.DocumentoNotaFiscal))
+                                            {
+                                                <a href="@Url.Content("~/documentos/notafiscal/" + nota.DocumentoNotaFiscal)" target="_blank">Ver Documento</a>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(nota.DocumentoBoletoBancario))
+                                            {
+                                                <a href="@Url.Content("~/documentos/notafiscal/" + nota.DocumentoBoletoBancario)" target="_blank">Ver Documento</a>
+                                            }
+                                        </td>
+                                        <td>@nota.Status</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <style>
+        .container {
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        const notasFiscais = @Html.Raw(Json.Serialize(Model));
+
+        function renderTable(notas) {
+            const tableBody = document.getElementById('notasTableBody');
+            tableBody.innerHTML = '';
+
+            notas.forEach(nota => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                        <td>${nota.nomePagador}</td>
+                        <td>${nota.numeroIdentificacao}</td>
+                        <td data-iso-date="${nota.dataEmissao}">${formatDateBR(nota.dataEmissao)}</td>
+                        <td data-iso-date="${nota.dataCobranca || ''}">${nota.dataCobranca ? formatDateBR(nota.dataCobranca) : '-'}</td>
+                        <td data-iso-date="${nota.dataPagamento || ''}">${nota.dataPagamento ? formatDateBR(nota.dataPagamento) : '-'}</td>
+                        <td>${formatCurrencyBR(nota.valor)}</td>
+                        <td>${nota.documentoNotaFiscal ? `<a href="@Url.Content("~/documentos/notafiscal/")${nota.documentoNotaFiscal}" target="_blank">Ver Documento</a>` : ''}</td>
+                        <td>${nota.documentoBoletoBancario ? `<a href="@Url.Content("~/documentos/notafiscal/")${nota.documentoBoletoBancario}" target="_blank">Ver Documento</a>` : ''}</td>
+                        <td>${nota.status}</td>
+                    `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function formatDateBR(dateString) {
+            if (dateString) {
+                const [year, month, day] = dateString.split('T')[0].split('-');
+                return `${day}/${month}/${year}`;
+            }
+            return '';
+        }
+
+        function formatCurrencyBR(value) {
+            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+        }
+
+        $(document).ready(function () {
+            function filtrarNotas() {
+                const mesEmissao = $('#mesEmissao').val();
+                const mesCobranca = $('#mesCobranca').val();
+                const mesPagamento = $('#mesPagamento').val();
+                const statusNota = $('#statusNota').val();
+
+                const notasFiltradas = notasFiscais.filter(nota => {
+                    return (!mesEmissao || nota.dataEmissao.startsWith(mesEmissao)) &&
+                        (!mesCobranca || (nota.dataCobranca && nota.dataCobranca.startsWith(mesCobranca))) &&
+                        (!mesPagamento || (nota.dataPagamento && nota.dataPagamento.startsWith(mesPagamento))) &&
+                        (!statusNota || nota.status === statusNota);
+                });
+
+                renderTable(notasFiltradas);
+            }
+
+            $('#filtrarBtn').on('click', function () {
+                filtrarNotas();
+            });
+
+            $('#limparFiltrosBtn').on('click', function () {
+                $('#mesEmissao').val('');
+                $('#mesCobranca').val('');
+                $('#mesPagamento').val('');
+                $('#statusNota').val('');
+                renderTable(notasFiscais);
+            });
+
+            renderTable(notasFiscais);
+        });
+    </script>
+</body>
+</html>

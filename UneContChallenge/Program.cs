@@ -1,9 +1,12 @@
 using UneContChallenge.CrossCutting;
+using UneContChallenge.Presentation.Helpers;
+using UneContChallenge.Presentation.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 DependencyInjector.Register(builder.Services);
+builder.Services.AddTransient<IConvertingFilesAndSavingOnRoot, ConvertingFilesAndSavingOnRoot>();
 ExtensionIOC.AddSqlServerConfig(builder.Services, builder.Configuration);
 ExtensionIOC.AddAutoMapperConfig(builder.Services);
 

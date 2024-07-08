@@ -9,11 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\UneContChallenge.Application\UneContChallenge.Application.csproj" />
     <ProjectReference Include="..\UneContChallenge.CrossCutting\UneContChallenge.CrossCutting.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\documentos\notafiscal\" />
   </ItemGroup>
 
 </Project>

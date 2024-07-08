@@ -1,8 +1,303 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@page
+@model UneContChallenge.Application.ViewModels.FiltroDashboardIndicadoresViewModel
+@using UneContChallenge.Application.ViewModels
+@{
+    var dadosIndicadores = new FiltroDashboardIndicadoresViewModel();
+    if (ViewBag.Dados != null)
+    {
+        dadosIndicadores = (FiltroDashboardIndicadoresViewModel)ViewBag.Dados;
+    }
 }
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading" style="height: 40px;">
+                <div class="page-title-icon" style="height: 34px; width: 50px;">
+                    <i class="fa fa-chart-bar" style="font-size: 16pt; margin: 0px;"></i>
+                </div>
+                <div style="margin-left: -10px;">
+                    <strong>Dashboard Financeiro</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</head>
+<body>
+    <div class="row" style="margin-top: 60px">
+        <div class="col-md-8 offset-md-2">
+            <div class="card card-body text-left" style="min-height: 430px; max-height: 430px;">
+                <div class="col-md-8 offset-md-4">
+                    <strong>Indicadores das Notas Fiscais</strong>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#filterModal" style=" height: 34px;margin-left: 80px;">
+                        Filtrar
+                    </button>
+                </div>
+                <br />
+                <table class="mb-0 table table-hover table-striped table-borderless">
+                    <tbody>
+                        <tr style="border-top: 1px solid #ccc;">
+                            <td width="5"><i style="color: #ccc;" class="metismenu-icon fa fa-file-alt"></i></td>
+                            <td>Valor Total das Notas Emitidas</td>
+                            <td>
+                                <p></p>
+                                <p id="valorEmitido">@((dadosIndicadores.ValorEmitido > 0) ? $"R${dadosIndicadores.ValorEmitido.ToString("N2")}" : "R$0,00")</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><i style="color: #ccc;" class="metismenu-icon fa fa-file-alt"></i></td>
+                            <td>Valor total sem Cobrança</td>
+                            <td>
+                                <p id="valorSemCobranca">@((dadosIndicadores.ValorSemCobranca > 0) ? $"R${dadosIndicadores.ValorSemCobranca.ToString("N2")}" : "R$0,00")</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><i style="color: #ccc;" class="metismenu-icon fa fa-file-alt"></i></td>
+                            <td>Valor Total das Notas Vencidas - Inadimplência</td>
+                            <td>
+                                <p id="valorVencido">@((dadosIndicadores.ValorVencido > 0) ? $"R${dadosIndicadores.ValorVencido.ToString("N2")}" : "R$0,00")</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><i style="color: #ccc;" class="metismenu-icon fa fa-file-alt"></i></td>
+                            <td>Valor total a vencer</td>
+                            <td>
+                                <p id="valorVencer">@((dadosIndicadores.ValorVencer > 0) ? $"R${dadosIndicadores.ValorVencer.ToString("N2")}" : "R$0,00")</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><i style="color: #ccc;" class="metismenu-icon fa fa-file-alt"></i></td>
+                            <td>Valor total pago</td>
+                            <td>
+                                <p id="valorPago">@((dadosIndicadores.ValorPago > 0) ? $"R${dadosIndicadores.ValorPago.ToString("N2")}" : "R$0,00")</p>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div style="border-bottom: 1px solid #4a5f6f; margin-top:40px"></div>
+    <div class="row" style="margin-top: 60px">
+        <div class="col-md-6">
+            <div id="inadimplencia-chart"></div>
+        </div>
+        <div class="col-md-6">
+            <div id="receita-chart"></div>
+        </div>
+    </div>
+    
+    <style>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .filter-options {
+            display: none;
+        }
+
+        .charts {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        #inadimplencia-chart, #receita-chart {
+            flex: 1 1 calc(50% - 20px);
+            min-width: 300px;
+            height: 400px;
+        }
+
+    </style>
+    <script>
+        $(document).ready(function () {
+            function loadCharts() {
+                // Simulated data for charts (replace with actual data fetching logic)
+                let inadimplenciaData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+                let receitaData = [5, 4, 3, 2, 1, 7, 8, 9, 10, 11, 12, 13];
+
+                Highcharts.chart('inadimplencia-chart', {
+                    chart: { type: 'line' },
+                    title: { text: 'Evolução da Inadimplência' },
+                    xAxis: { categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'] },
+                    yAxis: { title: { text: 'Valores (R$)' } },
+                    series: [{ name: 'Inadimplência', data: inadimplenciaData }]
+                });
+
+                Highcharts.chart('receita-chart', {
+                    chart: { type: 'line' },
+                    title: { text: 'Evolução da Receita Recebida' },
+                    xAxis: { categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'] },
+                    yAxis: { title: { text: 'Valores (R$)' } },
+                    series: [{ name: 'Receita', data: receitaData }]
+                });
+            }
+            loadCharts();
+        });
+    </script>
+    <script>
+        function showFilterOptions() {
+            const filterType = $('#filterType').val();
+            $('.filter-options').hide();
+
+            if (filterType === 'mensal') {
+                $('#mensalOptions').show();
+            } else if (filterType === 'true') {
+                $('#trimestralOptions').show();
+            } else if (filterType === 'anual') {
+                $('#anualOptions').show();
+            }
+        }
+
+        function applyFilter() {
+            const filterType = $('#filterType').val();
+            let ano, mes = null, trimestral = false;
+
+            if (filterType === 'mensal') {
+                mes = $('#mensalMes').val();
+                ano = $('#mensalAno').val();
+            } else if (filterType === 'true') {
+                mes = $('#trimestralMes').val();
+                ano = $('#trimestralAno').val();
+                trimestral = true;
+            } else if (filterType === 'anual') {
+                ano = $('#anualAno').val();
+            }
+
+            $.ajax({
+                url: '/Home/ObterIndicadoresFiltrado',
+                type: 'GET',
+                data: {
+                    ano: ano,
+                    mes: mes,
+                    trimestral: trimestral
+                },
+                success: function (data) {
+                    $("#valorEmitido").text(data.valorEmitido > 0 ? `R$${data.valorEmitido.toFixed(2).replace(".", ",")}` : "R$0,00");
+                    $("#valorSemCobranca").text(data.valorSemCobranca > 0 ? `R$${data.valorSemCobranca.toFixed(2).replace(".", ",")}` : "R$0,00");
+                    $("#valorVencido").text(data.valorVencido > 0 ? `R$${data.valorVencido.toFixed(2).replace(".", ",")}` : "R$0,00");
+                    $("#valorVencer").text(data.valorVencer > 0 ? `R$${data.valorVencer.toFixed(2).replace(".", ",")}` : "R$0,00");
+                    $("#valorPago").text(data.valorPago > 0 ? `R$${data.valorPago.toFixed(2).replace(".", ",")}` : "R$0,00");
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+
+            $('#filterModal').modal('hide');
+        }
+
+        $(document).ready(function () {
+            showFilterOptions();
+        });
+    </script>
+
+    @section modals{
+        <!-- Modal -->
+        <div id="filterModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="filterModalLabel">Selecione o Filtro</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="filterType">Filtrar por:</label>
+                        <select id="filterType" class="form-control" onchange="showFilterOptions()">
+                            <option value="mensal">Mensal</option>
+                            <option value="true">Trimestral</option>
+                            <option value="anual">Anual</option>
+                        </select>
+
+                        <div id="mensalOptions" class="filter-options mt-3">
+                            <label for="mensalMes">Mês:</label>
+                            <select id="mensalMes" class="form-control">
+                                <option value="1">Janeiro</option>
+                                <option value="2">Fevereiro</option>
+                                <option value="3">Março</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Maio</option>
+                                <option value="6">Junho</option>
+                                <option value="7">Julho</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Setembro</option>
+                                <option value="10">Outubro</option>
+                                <option value="11">Novembro</option>
+                                <option value="12">Dezembro</option>
+                            </select>
+
+                            <label for="mensalAno" class="mt-2">Ano:</label>
+                            <select id="mensalAno" class="form-control">
+                                <option value="2020">2020</option>
+                                <option value="2021">2021</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                            </select>
+                        </div>
+
+                        <div id="trimestralOptions" class="filter-options mt-3">
+                            <label for="trimestralMes">Mês de Início:</label>
+                            <select id="trimestralMes" class="form-control">
+                                <option value="1">Janeiro</option>
+                                <option value="2">Fevereiro</option>
+                                <option value="3">Março</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Maio</option>
+                                <option value="6">Junho</option>
+                                <option value="7">Julho</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Setembro</option>
+                                <option value="10">Outubro</option>
+                                <option value="11">Novembro</option>
+                                <option value="12">Dezembro</option>
+                            </select>
+
+                            <label for="trimestralAno" class="mt-2">Ano:</label>
+                            <select id="trimestralAno" class="form-control">
+                                <option value="2020">2020</option>
+                                <option value="2021">2021</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                            </select>
+                        </div>
+
+                        <div id="anualOptions" class="filter-options mt-3">
+                            <label for="anualAno">Ano:</label>
+                            <select id="anualAno" class="form-control">
+                                <option value="2020">2020</option>
+                                <option value="2021">2021</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="applyFilter()">Aplicar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</body>
+</html>
+
