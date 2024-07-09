@@ -9,9 +9,16 @@ namespace UneContChallenge.CrossCutting
     {
         public static IServiceCollection AddSqlServerConfig(this IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("UneContSettings");
+            var server = configuration["DbServer"] ?? "sqlserver";
+            var port = configuration["DbPort"] ?? "1433"; 
+            var user = configuration["DbUser"] ?? "SA"; 
+            var password = configuration["Password"] ?? "Unecontchallenge@2024";
+            var database = configuration["Database"] ?? "NotaFiscalDb";
 
-            services.AddDbContext<DataContexts>(options => options.UseSqlServer(connectionString));
+            var connectionString = $"Server={server},{port};Initial Catalog={database};User ID={user};Password={password};TrustServerCertificate=True";
+
+            services.AddDbContext<DataContexts>(options =>
+                options.UseSqlServer(connectionString));
 
             return services;
         }
