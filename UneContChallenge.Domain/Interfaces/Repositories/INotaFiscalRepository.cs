@@ -6,5 +6,6 @@ namespace UneContChallenge.Domain.Interfaces.Repositories
     {
         Task<FiltroDashboardIndicadores> GetDashboardIndicadoresAsync();
         Task<FiltroDashboardIndicadores> GetDashboardIndicadoresFiltradosAsync(int ano, int? mes = null, bool trimestral = false);
+        Task<List<DadosMensaisDashboard>> GetMonthlyDataAsync(int ano);
     }
 }

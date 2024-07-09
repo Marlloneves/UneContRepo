@@ -12,5 +12,6 @@ namespace UneContChallenge.Application.Interfaces
         Task<NotaFiscalViewModel> ObterNotaFiscalPorIdAsync(int id);
         Task<FiltroDashboardIndicadoresViewModel> ObterDashboardIndicadoresAsync();
         Task<FiltroDashboardIndicadoresViewModel> GetDashboardIndicadoresFiltradosAsync(int ano, int? mes = null, bool trimestral = false);
+        Task<List<DadosMensaisDashboardViewModel>> ObterDadosMensalmenteAsync(int ano);
     }
 }

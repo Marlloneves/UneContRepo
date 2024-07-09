@@ -126,24 +126,35 @@
     <script>
         $(document).ready(function () {
             function loadCharts() {
-                // Simulated data for charts (replace with actual data fetching logic)
-                let inadimplenciaData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-                let receitaData = [5, 4, 3, 2, 1, 7, 8, 9, 10, 11, 12, 13];
+                $.ajax({
+                    url: '/Home/ObterDadosDashboard',
+                    data: { ano: 2024 },
+                    success: function (data) {
+                        var inadimplenciaData = Array(12).fill(0);
+                        var receitaData = Array(12).fill(0);
 
-                Highcharts.chart('inadimplencia-chart', {
-                    chart: { type: 'line' },
-                    title: { text: 'Evolução da Inadimplência' },
-                    xAxis: { categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'] },
-                    yAxis: { title: { text: 'Valores (R$)' } },
-                    series: [{ name: 'Inadimplência', data: inadimplenciaData }]
-                });
+                        // Popula os arrays com os dados do backend
+                        data.forEach(item => {
+                            inadimplenciaData[item.mes - 1] = item.inadimplencia;
+                            receitaData[item.mes - 1] = item.receita;
+                        });
 
-                Highcharts.chart('receita-chart', {
-                    chart: { type: 'line' },
-                    title: { text: 'Evolução da Receita Recebida' },
-                    xAxis: { categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'] },
-                    yAxis: { title: { text: 'Valores (R$)' } },
-                    series: [{ name: 'Receita', data: receitaData }]
+                        Highcharts.chart('inadimplencia-chart', {
+                            chart: { type: 'line' },
+                            title: { text: 'Evolução da Inadimplência' },
+                            xAxis: { categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'] },
+                            yAxis: { title: { text: 'Valores (R$)' } },
+                            series: [{ name: 'Inadimplência', data: inadimplenciaData }]
+                        });
+
+                        Highcharts.chart('receita-chart', {
+                            chart: { type: 'line' },
+                            title: { text: 'Evolução da Receita Recebida' },
+                            xAxis: { categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'] },
+                            yAxis: { title: { text: 'Valores (R$)' } },
+                            series: [{ name: 'Receita', data: receitaData }]
+                        });
+                    }
                 });
             }
             loadCharts();

@@ -62,5 +62,12 @@ namespace UneContChallenge.Application.Services
 
             return _mapper.Map<FiltroDashboardIndicadoresViewModel>(dashboardIndicadores);
         }
+
+        public async Task<List<DadosMensaisDashboardViewModel>> ObterDadosMensalmenteAsync(int ano)
+        {
+            var data = await _notaFiscalDomainService.GetMonthlyDataAsync(ano);
+
+            return _mapper.Map<List<DadosMensaisDashboardViewModel>>(data);
+        }
     }
 }

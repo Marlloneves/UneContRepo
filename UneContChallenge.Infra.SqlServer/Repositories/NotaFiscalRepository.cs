@@ -84,5 +84,21 @@ namespace UneContChallenge.Infra.Repositories
             return query;
         }
 
+        public async Task<List<DadosMensaisDashboard>> GetMonthlyDataAsync(int ano)
+        {
+            var todasNotas = await _dataContexts.NotaFiscal
+        .Where(nf => nf.DataEmissao.Year == ano)
+        .ToListAsync();
+
+            var dadosMensais = Enumerable.Range(1, 12).Select(m => new DadosMensaisDashboard
+            {
+                Mes = m,
+                Inadimplencia = todasNotas.Where(nf => nf.DataEmissao.Month == m && nf.Status == "Pagamento em Atraso" && nf.DataPagamento == null && nf.DataEmissao.AddDays(30) < DateTime.Now).Sum(nf => nf.Valor),
+                Receita = todasNotas.Where(nf => nf.DataEmissao.Month == m && nf.Status == "Pagamento Realizado" && nf.DataPagamento != null).Sum(nf => nf.Valor)
+            }).ToList();
+
+            return dadosMensais;
+
+        }
     }
 }

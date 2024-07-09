@@ -23,5 +23,10 @@ namespace UneContChallenge.Domain.Services
         {
             return _unitOfWork.NotaFiscalRepository.GetDashboardIndicadoresAsync();
         }
+
+        public Task<List<DadosMensaisDashboard>> GetMonthlyDataAsync(int ano)
+        {
+            return _unitOfWork.NotaFiscalRepository.GetMonthlyDataAsync(ano);
+        }
     }
 }

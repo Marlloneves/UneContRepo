@@ -30,5 +30,11 @@ namespace UneContChallenge.Controllers
             return Json(dadosIndicadores);
         }
 
+        public async Task<IActionResult> ObterDadosDashboard(int ano)
+        {
+            var dadosMensaisInadimplenciaEReceita = await _notaFiscalAppService.ObterDadosMensalmenteAsync(ano);
+            return Json(dadosMensaisInadimplenciaEReceita);
+        }
+
     }
 }

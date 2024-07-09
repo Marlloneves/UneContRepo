@@ -13,6 +13,8 @@ namespace UneContChallenge.Application.Mappings
 
             CreateMap<FiltroDashboardIndicadoresViewModel, FiltroDashboardIndicadores>();
             CreateMap<FiltroDashboardIndicadores, FiltroDashboardIndicadoresViewModel>();
+
+            CreateMap<DadosMensaisDashboard, DadosMensaisDashboardViewModel>();
         }
     }
 }
