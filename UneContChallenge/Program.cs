@@ -1,4 +1,5 @@
 using UneContChallenge.CrossCutting;
+using UneContChallenge.Infra.Services;
 using UneContChallenge.Presentation.Helpers;
 using UneContChallenge.Presentation.Interfaces;
 
@@ -29,4 +30,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+DatabaseManagementService.MigrationInitialisation(app);
 app.Run();
